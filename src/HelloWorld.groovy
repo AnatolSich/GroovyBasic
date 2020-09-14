@@ -15,11 +15,19 @@ class HelloWorld {
                println name.getClass()*/
 
         Person johnDoe = new Person()
-        johnDoe.setFirstName("John")
+        johnDoe.setFirstName("Johnny".drop(2))
         johnDoe.setLastName("Doe")
         johnDoe.setAge(40)
 
-        println(johnDoe.getFullName())
+
+        try {
+            println(johnDoe.getFullName().toLong())
+        } catch (Exception e) {
+            assert e instanceof NumberFormatException
+            println("Cannot print it")
+        } finally {
+            println johnDoe.getFullName()
+        }
         println(johnDoe.getAge())
 
         if (johnDoe.getAge() >= 45 && johnDoe <= 65) {
