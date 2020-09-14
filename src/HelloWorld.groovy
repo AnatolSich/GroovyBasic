@@ -1,6 +1,6 @@
 import org.apache.groovy.jaxb.extensions.JaxbExtensions
 
-class HelloWorld {
+public class HelloWorld {
     static void main(String[] args) {
         /*       println "Hello World"
 
@@ -45,5 +45,13 @@ class HelloWorld {
         for (Person p : persons) {
             println(p.getFullName())
         }
+
+        def calc = new Calculator()
+
+        println(calc.addition(5d, 6L))
+        println(calc.substraction(5, 6))
+        println(calc.multiplication(5, 6))
+        def div = calc.division(5, 6)
+        div != null ? println(div) : println()
     }
 }
