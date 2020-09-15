@@ -66,6 +66,101 @@ class HelloWorld {
         Closure personFullName = { Person person -> println person.getFirstName() + " " + person.getLastName() }
 
         handlePerson(personFullName, johnDoe)
+
+        Person maryHill = new Person("Mary", "Hill", 30)
+        Person thomasMarks = new Person("Thomas", "Marks", 21)
+
+        def range = 2..4
+        println range.size()
+        println range instanceof List
+
+        def allPersons = [johnDoe, maryHill, thomasMarks]
+        println allPersons instanceof List
+        List personList = allPersons
+
+        println allPersons.size()
+        println allPersons[1]
+
+        allPersons.each { println it }
+
+        allPersons.each { Person it -> println it }
+
+        allPersons.each { Person p -> println p }
+
+        allPersons.eachWithIndex { Person entry, int i -> println i + ": " + entry }
+
+        println allPersons.find { it.getLastName() == "Hill" }
+        allPersons.sort { it.getAge() }.each { println it }
+        allPersons.collect { it.getAge() <= 30 }.each { println it }
+
+        File file = new File("resources/john-doe.txt")
+        println file.getText("UTF-8")
+
+        file.eachLine { it, no ->
+            if (no == 1) {
+                johnDoe.setFirstName(it)
+            } else if (no == 2) {
+                johnDoe.setLastName(it)
+            } else if (no == 3) {
+                johnDoe.setAge(it.toInteger())
+            } else {
+                throw new RuntimeException("File should have only 3 lines")
+            }
+        }
+
+        def actualCount = 0
+        file.withReader { reader ->
+            while (reader.readLine()) {
+                actualCount++
+            }
+        }
+        println actualCount
+
+        def outputPath = 'resources/ioOut.txt'
+        def reader = new File('resources/ioInput.txt').newReader()
+        new File(outputPath).append(reader)
+        reader.close()
+
+
+        byte[] data = []
+        new File("resources/binaryExample.jpg").withInputStream { stream ->
+            data = stream.getBytes()
+        }
+
+        outputPath = 'resources/binaryOut.jpg'
+        def is = new File('resources/binaryExample.jpg').newInputStream()
+        new File(outputPath).append(is)
+        is.close()
+
+
+        List<String> actualList = new File('resources/ioInput.txt').collect { it }
+
+        String[] actualArray = new File('resources/ioInput.txt') as String[]
+
+        String actualString = new File('resources/ioInput.txt').text
+
+        byte[] contents = new File('resources/binaryExample.jpg').bytes
+
+
+        File textFile = new File("resources/mary-hill.txt")
+        textFile.withWriter("UTF-8") { writer ->
+            writer.writeLine(maryHill.getFirstName())
+            writer.write(maryHill.getLastName())
+            writer.writeLine(maryHill.getAge().toString())
+        }
+
+        textFile.append(1)
+        textFile.append(2)
+        textFile << 3
+        textFile.withWriterAppend("UTF-8") { out -> out.append("text") }
+        textFile.withWriterAppend("UTF-8") { out -> out.println("text2") }
+        textFile.withWriterAppend("UTF-8") { out -> out.println("text3") }
+
+        def ln = System.getProperty('line.separator')
+        textFile.append(ln + "Separate line")
+
+
+
     }
 
     static void handlePerson(Closure closure, Person person) {
