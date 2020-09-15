@@ -15,7 +15,7 @@ public class HelloWorld {
                println name.getClass()*/
 
         Person johnDoe = new Person()
-        johnDoe.setFirstName("Johnny".drop(2))
+        johnDoe.setFirstName("Johnny".dropRight(2))
         johnDoe.setLastName("Doe")
         johnDoe.setAge(40)
 
@@ -53,5 +53,7 @@ public class HelloWorld {
         println(calc.multiplication(5, 6))
         def div = calc.division(5, 6)
         div != null ? println(div) : println()
+
+        println johnDoe.toString()
     }
 }
