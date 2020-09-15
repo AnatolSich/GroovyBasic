@@ -161,6 +161,37 @@ class HelloWorld {
 
 
 
+        String message = 'This is a serialized string'
+        int length = message.length()
+        boolean valid = true
+
+        new File('resources/ioData.txt').withDataOutputStream { out ->
+            out.writeUTF(message)
+            out.writeInt(length)
+            out.writeBoolean(valid)
+        }
+
+        String loadedMessage = ""
+        int loadedLength
+        boolean loadedValid
+
+        new File('resources/ioData.txt').withDataInputStream { inputStream ->
+            loadedMessage = inputStream.readUTF()
+            loadedLength = inputStream.readInt()
+            loadedValid = inputStream.readBoolean()
+        }
+
+
+       // Person thomasMarks = new Person("Thomas", "Marks", 21)
+        File binFile = new File("resources/thomas-marks.bin")
+        binFile.withObjectOutputStream { out ->
+            out.writeObject(thomasMarks)
+        }
+
+        new File('resources/thomas-marks.bin').withObjectInputStream { inputStream ->
+            thomasMarks = inputStream.readObject()
+        }
+
     }
 
     static void handlePerson(Closure closure, Person person) {

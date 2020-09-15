@@ -7,7 +7,7 @@ import groovy.transform.TupleConstructor
 @EqualsAndHashCode
 @TupleConstructor*/
 @Canonical
-class Person {
+class Person implements Serializable{
     String firstName
     String lastName
     int age
