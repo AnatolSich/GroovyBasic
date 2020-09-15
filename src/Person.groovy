@@ -1,10 +1,12 @@
+import groovy.transform.Canonical
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
-@ToString
+/*@ToString
 @EqualsAndHashCode
-@TupleConstructor
+@TupleConstructor*/
+@Canonical
 class Person {
     String firstName
     String lastName

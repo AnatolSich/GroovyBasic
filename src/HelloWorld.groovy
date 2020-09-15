@@ -1,6 +1,4 @@
-import org.apache.groovy.jaxb.extensions.JaxbExtensions
-
-public class HelloWorld {
+class HelloWorld {
     static void main(String[] args) {
         /*       println "Hello World"
 
@@ -55,5 +53,25 @@ public class HelloWorld {
         div != null ? println(div) : println()
 
         println johnDoe.toString()
+
+        Closure johnPrint = { println johnDoe.toString() }
+        johnPrint()
+
+        Closure personPrint = { Person person -> println person.toString() }
+        Object resultClosure = personPrint(johnDoe)
+        println resultClosure
+
+        handlePerson(personPrint, johnDoe)
+
+        Closure personFullName = { Person person -> println person.getFirstName() + " " + person.getLastName() }
+
+        handlePerson(personFullName, johnDoe)
+    }
+
+    static void handlePerson(Closure closure, Person person) {
+        if (person == null) {
+            throw new RuntimeException("A person instance is null")
+        }
+        closure(person)
     }
 }
