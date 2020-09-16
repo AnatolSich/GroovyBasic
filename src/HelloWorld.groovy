@@ -1,3 +1,5 @@
+import groovy.io.FileType
+
 class HelloWorld {
     static void main(String[] args) {
         /*       println "Hello World"
@@ -93,6 +95,19 @@ class HelloWorld {
         allPersons.sort { it.getAge() }.each { println it }
         allPersons.collect { it.getAge() <= 30 }.each { println it }
 
+        Map<String, String> m = [:]
+        m.put("1","2")
+        println m.size()
+
+        ArrayList <String> arrayList = []
+        arrayList.add("RRRR")
+        println arrayList.size()
+
+        arrayList << "1"
+        println arrayList
+
+
+
         File file = new File("resources/john-doe.txt")
         println file.getText("UTF-8")
 
@@ -160,7 +175,6 @@ class HelloWorld {
         textFile.append(ln + "Separate line")
 
 
-
         String message = 'This is a serialized string'
         int length = message.length()
         boolean valid = true
@@ -182,7 +196,7 @@ class HelloWorld {
         }
 
 
-       // Person thomasMarks = new Person("Thomas", "Marks", 21)
+        // Person thomasMarks = new Person("Thomas", "Marks", 21)
         File binFile = new File("resources/thomas-marks.bin")
         binFile.withObjectOutputStream { out ->
             out.writeObject(thomasMarks)
@@ -191,6 +205,70 @@ class HelloWorld {
         new File('resources/thomas-marks.bin').withObjectInputStream { inputStream ->
             thomasMarks = inputStream.readObject()
         }
+
+        //only list the contents of the top-level directory
+        new File('resources').eachFile { fileInside ->
+            println fileInside.name
+        }
+        //only list the contents of the top-level directory
+        //only the files that start with “io” and end in “.txt”:
+
+        new File('resources').eachFileMatch(~/io.*\.txt/) { fileInside ->
+            println fileInside.name
+        }
+
+        //only list the contents of the top-level directory
+        //The options are ANY, FILES, and DIRECTORIES.
+        new File('resources').eachFileMatch(FileType.FILES, ~/io.*\.txt/) { fileInside ->
+            println fileInside.name
+        }
+
+        //list all the contents of the top-level directory
+        //working with only directories. We can use eachDir and eachFile with a FileType of DIRECTORIES.
+
+        new File('src').eachFileRecurse(FileType.DIRECTORIES) { fileInside ->
+            println "$fileInside.parent $fileInside.name"
+        }
+
+        new File('src').eachDirRecurse { dir ->
+            println "$dir.parent $dir.name"
+        }
+
+        //provides the ability to return FileVisitResult objects to control the processing.
+        // use traverse on our src/main directory and skip processing the tree under the groovy directory:
+
+        new File('src').traverse { fileInside ->
+            if (fileInside.directory && fileInside.name == 'groovy') {
+                FileVisitResult.SKIP_SUBTREE
+            } else {
+                println "$fileInside.parent - $fileInside.name"
+            }
+        }
+
+
+/*        List<File> fileList = []
+
+        new File('exercise').eachFileRecurse(FileType.FILES) { fileInside ->
+            fileList.add(fileInside)
+        }
+        println fileList.size()*/
+
+        List<Double> numbersList = []
+
+        new File('exercise').eachFileRecurse(FileType.FILES) { fileInside ->
+            fileInside.eachLine {
+                if (it.isNumber()) {
+                    double d = it.toDouble()
+                    numbersList.add(d)
+                    println d
+                }
+            }
+        }
+        println numbersList.size()
+
+        println "max = " + numbersList.max()
+        println "sum = " + numbersList.sum()
+
 
     }
 
